@@ -26,7 +26,8 @@ class InstallCommand extends Command {
     private $commandTasks;
     private $selectedProvider;
 
-    public function __construct(Installables $installables, RunInstallable $runInstallable, CommandTasks $commandTasks) {
+    public function __construct(Installables $installables, RunInstallable $runInstallable,
+        CommandTasks $commandTasks) {
         parent::__construct();
         $this->installables = $installables;
         $this->runInstallable = $runInstallable;
@@ -39,7 +40,7 @@ class InstallCommand extends Command {
         $this->commandTasks->setOutput($this->output);
         $this->selectedProvider = $this->option('provider');
 
-        if(!isset($this->selectedProvider)) {
+        if (!isset($this->selectedProvider)) {
             $this->selectedProvider = $this->selectProvider();
         }
 
@@ -47,10 +48,12 @@ class InstallCommand extends Command {
 
 
         $this->addInstallerValidationTask();
+        $this->addMigrationUpdateTask();
         $this->addVendorPublishTask();
-        $this->addMigrationTask();
-        //$this->addConfigReadyTask();
+        $this->addConfigEditTask();
 
+        $this->addMigrationTask();
+        $this->addSeedTask();
 
         try {
             $this->commandTasks->runTasks();
@@ -70,7 +73,9 @@ class InstallCommand extends Command {
         $provider = app()->getProvider($selectedProvider);
 
         $hasInstallable = is_subclass_of($provider, InstallableServiceProvider::class);
-        return $hasInstallable ? $provider->installer() : null;
+        return $hasInstallable
+            ? $provider->installer()
+            : null;
     }
 
     public function addInstallerValidationTask(): void {
@@ -98,8 +103,8 @@ class InstallCommand extends Command {
         $provider = preg_grep('/' . $providerName . '/i', ServiceProvider::publishableProviders());
 
         return array_merge(['<comment>None</comment>'],
-                           preg_filter('/^/', '<comment>Provider: </comment>', Arr::sort($provider)),
-                           preg_filter('/^/', '<comment>Tag: </comment>', Arr::sort($tags)));
+            preg_filter('/^/', '<comment>Provider: </comment>', Arr::sort($provider)),
+            preg_filter('/^/', '<comment>Tag: </comment>', Arr::sort($tags)));
     }
 
     public function addConfigReadyTask(): void {
@@ -115,11 +120,32 @@ class InstallCommand extends Command {
     public function addMigrationTask(): void {
         $this->commandTasks->addTask('Migrate', function () {
             $response = $this->call('installable:migrate', [
-                '--provider' => $this->selectedProvider
+                '--provider' => $this->selectedProvider,
             ]);
-            dump([
-                'migration-task',
-                $response
+            return true;
+        });
+    }
+
+    public function addConfigEditTask(): void {
+        $this->commandTasks->addTask('Edit configuration', function () {
+            $response = $this->call('installable:config-edit', [
+                '--provider' => $this->selectedProvider,
+            ]);
+            return true;
+        });
+    }
+
+    private function addMigrationUpdateTask(): void {
+        $this->commandTasks->addTask('Update migration', function () {
+            $response = $this->call('installable:migration-update');
+            return true;
+        });
+    }
+
+    private function addSeedTask(): void {
+        $this->commandTasks->addTask('Seed migrations', function () {
+            $response = $this->call('installable:seed', [
+                '--provider' => $this->selectedProvider
             ]);
             return true;
         });

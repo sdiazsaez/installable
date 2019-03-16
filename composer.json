@@ -29,7 +29,10 @@
         "laravel": {
             "providers": [
                 "Larangular\\Installable\\InstallableServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "InstallableMigration": "Larangular\\Installable\\Facades\\InstallableMigration"
+            }
         }
     },
     "require-dev": {

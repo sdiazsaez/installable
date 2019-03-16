@@ -10,6 +10,7 @@ use Larangular\Installable\Support\InstallableServiceProvider;
 class BaseCommand extends Command {
 
     protected $selectedProvider;
+    private $selectedProviderInstance;
 
     public function getSelectedProvider(): string {
         if(is_null($this->selectedProvider)) {
@@ -23,7 +24,10 @@ class BaseCommand extends Command {
     }
 
     public function getSelectedProviderInstance(): InstallableServiceProvider {
-        return app()->getProvider($this->selectedProvider);
+        if(is_null($this->selectedProviderInstance)) {
+            $this->selectedProviderInstance = app()->getProvider($this->selectedProvider);
+        }
+        return $this->selectedProviderInstance;
     }
 
     private function selectProvider(): string {

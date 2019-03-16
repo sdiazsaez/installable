@@ -16,9 +16,9 @@ use Larangular\Installable\Installer\RunInstallable;
 use Larangular\Installable\Support\PublishableGroups;
 use Larangular\Support\Facades\Instance;
 
-class InstallableMigrateCommand extends BaseCommand {
+class InstallableSeedCommand extends BaseCommand {
 
-    protected $signature   = 'installable:migrate
+    protected $signature   = 'installable:seed
                             {--provider= : Full Qualify namespace to class implementing CanMigrate }';
     protected $description = 'Pending description';
     protected $commandTasks;
@@ -34,36 +34,21 @@ class InstallableMigrateCommand extends BaseCommand {
         $provider = $this->getSelectedProvider();
 
         $this->installableConfig = InstallableConfig::config($provider);
-        $this->runMigrations($this->installableConfig->getMigrations());
+        $this->runSeeds($this->installableConfig->getSeeds());
     }
 
-    private function runMigrations(array $migrations) {
-        foreach ($migrations as $migration) {
-            $this->runMigration($migration);
+    private function runSeeds(array $seeds) {
+        foreach ($seeds as $seed) {
+            $this->runSeed($seed);
         }
     }
 
-    private function runMigration(Migration $migration): void {
-        $provider = $this->getSelectedProviderInstance();
-        $isPublished = $provider->isPublished(PublishableGroups::Migrations, $migration->getName());
-
-        $migrationPath = $isPublished
-            ? $migration->getPublishPath()
-            : $migration->getLocalPath();
-
-        $name = is_null($migration->getName())
-            ? 'global-config'
-            : $migration->getName();
-
-        $this->info("Starting migration <comment>{$name}</comment>: <comment>{$migration->getConnection()}</comment> - {$migrationPath}");
-
-        $this->call('migrate:refresh', [
-            '--database' => $migration->getConnection(),
-            '--path'     => $migrationPath,
+    private function runSeed(string $seed): void {
+        $this->info("Starting seed <comment>name</comment>: <comment>connection</comment> - path - {$seed}");
+        $this->call('db:seed', [
+            //'--database' => $migration->getConnection(),
+            '--class' => $seed,
         ]);
     }
 
-    private function getValidMigrationPath(string $migrationPath): string {
-        return str_replace(base_path(), '', $migrationPath);
-    }
 }

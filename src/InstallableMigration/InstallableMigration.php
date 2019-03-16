@@ -11,9 +11,12 @@ class InstallableMigration {
 
     private $migrations = [];
 
+    public function addGlobalMigrationConfig($key, $config) {
+        $this->migrations[$key]['global-config'] = $config;
+    }
+
     public function addMigrationConfig($key, $migration) {
-        $this->migrations[$key][$migration['name']] = $migration;
-        //$this->migrations[$migration['name']] = $migration;
+        $this->migrations[$key]['config'][$migration['name']] = $migration;
     }
 
     public function writeMigrations(): bool {
@@ -23,19 +26,6 @@ class InstallableMigration {
         app('config.extended')->save('installable.migrations', $result);
         config()->set($migrationsKey, $result);
         return (config($migrationsKey) == $result);
-
-
-        /*
-        $config->set('migrations', $result);
-        $config->save();*/
-
-        /*
-        foreach($result as $key => $value) {
-            $this->writeMigration('migrations.'.$key, $value);
-        }*/
-
-        //app()['config']->write($migrationsKey, null);
-        //app()['config']->write($migrationsKey, $result);
     }
 
     private function writeMigration($key, $value) {
@@ -43,20 +33,14 @@ class InstallableMigration {
             return;
         }
 
-
         if(!app()['config']->has($key)){
             $childKey = $this->getKeyLastChild($key);
             $parentKey = $this->removeKeyLastChild($key);
             $this->writeMigration($parentKey, [$childKey => []]);
-            /*
-            $migrations = Config::get($migrationConfigPath);
-            $migrations[$migrationName] = $result;
-            Config::write($key, $migrations);*/
         }
 
         $config = config($key);
         $result = array_merge($value, $config);
-        //app()['config']->write($key, $result);
     }
 
     private function getKeyLastChild($key): string {

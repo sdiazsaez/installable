@@ -46,17 +46,6 @@ class InstallablePublishCommand extends BaseCommand {
         if(!empty($selectedAssets)) {
             $this->vendorPublish($selectedAssets);
         }
-        /*
-        $this->addPublishableAssetsValidation();
-        $this->addPublishAssets();
-
-        try {
-            $this->commandTasks->runTasks();
-            $this->line('success');
-        } catch (TaskFailed $e) {
-            $this->line('');
-            $this->error($e->getMessage());
-        }*/
     }
 
     protected function getPublishableAssets(string $providerName): array {
@@ -91,7 +80,7 @@ class InstallablePublishCommand extends BaseCommand {
         return $response;
     }
 
-    protected function vendorPublish(array $selectedAssets) {
+    protected function vendorPublish(array $selectedAssets): int {
         $arguments = [];
         if(array_key_exists('provider', $selectedAssets)) {
             $arguments['--provider'] = $selectedAssets['provider'];

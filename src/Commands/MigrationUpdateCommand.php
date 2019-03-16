@@ -18,7 +18,7 @@ class MigrationUpdateCommand extends BaseCommand {
 
     protected $signature = 'installable:migration-update';
                             //{--provider= : Full Qualify namespace to class implementing CanMigrate }';
-    protected $description = 'Pending description';
+    protected $description = 'Write installable config';
 
     protected $commandTasks;
 
