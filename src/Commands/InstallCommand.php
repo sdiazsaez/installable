@@ -19,7 +19,6 @@ class InstallCommand extends Command {
 
     protected $signature   = 'vendor:install {--provider= : Full Qualify namespace to class implementing InstallableServiceProvider }';
     protected $description = 'Pending description';
-    //private $UFController;
 
     private $installer;
     private $installables;

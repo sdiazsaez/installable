@@ -3,8 +3,8 @@
 namespace Larangular\Installable\Tests;
 
 use Illuminate\Console\OutputStyle;
-use \Larangular\Installable\Installer\CommandTasks;
-use \Larangular\Installable\Exceptions\TaskFailed;
+use Larangular\Installable\CommandTasks\CommandTasks;
+use Larangular\Installable\Exceptions\TaskFailed;
 
 class CommandTasksTest extends TestCase {
     /** @test */
@@ -24,8 +24,8 @@ class CommandTasksTest extends TestCase {
         $commandTasks->runTasks();
 
         $this->assertEquals([
-                                'Example Task' => true,
-                            ], $commandTasks->getResults());
+            'Example Task' => true,
+        ], $commandTasks->getResults());
     }
 
     /** @test */
@@ -46,8 +46,8 @@ class CommandTasksTest extends TestCase {
         $commandTasks->runTasks();
 
         $this->assertEquals([
-                                'Example Task' => false,
-                            ], $commandTasks->getResults());
+            'Example Task' => false,
+        ], $commandTasks->getResults());
     }
 
     /** @test */
@@ -71,9 +71,9 @@ class CommandTasksTest extends TestCase {
         $commandTasks->runTasks();
 
         $this->assertEquals([
-                                'Example successful task' => true,
-                                'Example failed task'     => false,
-                            ], $commandTasks->getResults());
+            'Example successful task' => true,
+            'Example failed task'     => false,
+        ], $commandTasks->getResults());
     }
 
     /** @test */

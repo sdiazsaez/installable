@@ -15,4 +15,13 @@ class InstallableTest extends TestCase {
         $this->assertTrue(($installables == (new Installables)->getInstallables()));
     }
 
+    public function testGetInstallablesRand() {
+        $installables = [
+            HasInstallableServiceProvider::class
+        ];
+
+        dd((new Installables)->getInstallables());
+        $this->assertTrue(($installables == (new Installables)->getInstallables()));
+    }
+
 }

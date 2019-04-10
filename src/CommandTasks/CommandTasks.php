@@ -1,6 +1,6 @@
 <?php
 
-namespace Larangular\Installable\Installer;
+namespace Larangular\Installable\CommandTasks;
 
 use Illuminate\Support\Collection;
 use Illuminate\Console\OutputStyle;
@@ -27,7 +27,7 @@ class CommandTasks {
     /**
      * Set command output.
      *
-     * @param  \Illuminate\Console\OutputStyle $output
+     * @param \Illuminate\Console\OutputStyle $output
      * @return self
      */
     public function setOutput(OutputStyle $output): self {
@@ -38,8 +38,8 @@ class CommandTasks {
     /**
      * Add task with result to the stack.
      *
-     * @param  string $name
-     * @param  callable $task
+     * @param string $name
+     * @param callable $task
      * @return self
      */
     public function addTask(string $name, callable $task): self {
@@ -61,7 +61,9 @@ class CommandTasks {
                       if ($this->output) {
                           $this->output->writeLn(vsprintf('%s: %s', [
                               $description,
-                              $result ? '<fg=green>✔</>' : '<fg=red>✘</>',
+                              $result
+                                  ? '<fg=green>✔</>'
+                                  : '<fg=red>✘</>',
                           ]));
                       }
                       $this->results[$description] = $result;

@@ -18,7 +18,7 @@ use Larangular\Support\Facades\Instance;
 class InstallableConfigEditCommand extends BaseCommand {
 
     protected $signature   = 'installable:config-edit
-                            {--provider= : Full Qualify namespace to class implementing CanMigrate }';
+                            {--provider= : Full Qualify namespace to class implementing Installable }';
     protected $description = 'Edit installable config';
     protected $commandTasks;
     private   $installableConfig;

@@ -4,6 +4,7 @@ namespace Larangular\Installable;
 
 use \GreyDev\ConfigExtension\ConfigExtensionProvider;
 use \Illuminate\Support\ServiceProvider;
+use Larangular\Installable\Commands\InstallableAppInstallCommand;
 use Larangular\Installable\Commands\InstallableConfigEditCommand;
 use Larangular\Installable\Commands\InstallableMigrateCommand;
 use Larangular\Installable\Commands\InstallablePublishCommand;
@@ -27,16 +28,16 @@ class InstallableServiceProvider extends ServiceProvider {
      */
     public function boot() {
         if($this->app->runningInConsole()) {
-
+            $this->commands([
+                InstallCommand::class,
+                InstallablePublishCommand::class,
+                InstallableMigrateCommand::class,
+                MigrationUpdateCommand::class,
+                InstallableConfigEditCommand::class,
+                InstallableSeedCommand::class,
+                InstallableAppInstallCommand::class
+            ]);
         }
-        $this->commands([
-                            InstallCommand::class,
-                            InstallablePublishCommand::class,
-                            InstallableMigrateCommand::class,
-                            MigrationUpdateCommand::class,
-                            InstallableConfigEditCommand::class,
-                            InstallableSeedCommand::class
-                        ]);
 
 
         $this->publishes([
