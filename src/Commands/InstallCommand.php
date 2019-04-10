@@ -4,12 +4,10 @@ namespace Larangular\Installable\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\ServiceProvider;
-use Larangular\Installable\Contracts\HasInstallable;
 use Larangular\Installable\Contracts\Installable;
 use Larangular\Installable\Contracts\Publishable;
-use Larangular\Installable\Installer\CommandTasks;
+use Larangular\Installable\CommandTasks\CommandTasks;
 use Larangular\Installable\Installer\Installables;
 use Larangular\Installable\Installer\RunInstallable;
 use Larangular\Installable\Support\InstallableServiceProvider;
@@ -144,7 +142,7 @@ class InstallCommand extends Command {
     private function addSeedTask(): void {
         $this->commandTasks->addTask('Seed migrations', function () {
             $response = $this->call('installable:seed', [
-                '--provider' => $this->selectedProvider
+                '--provider' => $this->selectedProvider,
             ]);
             return true;
         });

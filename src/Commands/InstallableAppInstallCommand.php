@@ -9,7 +9,7 @@ use Illuminate\Support\ServiceProvider;
 use Larangular\Installable\Contracts\HasInstallable;
 use Larangular\Installable\Contracts\Installable;
 use Larangular\Installable\Contracts\Publishable;
-use Larangular\Installable\Installer\CommandTasks;
+use Larangular\Installable\CommandTasks\CommandTasks;
 use Larangular\Installable\Installer\Installables;
 use Larangular\Installable\Installer\RunInstallable;
 use Larangular\Installable\Support\InstallableServiceProvider;
