@@ -26,15 +26,16 @@ class InstallableAppInstallCommand extends InstallCommand {
     private $commandTasks;
     private $selectedProvider;
 
+    /*
     public function __construct(Installables $installables, RunInstallable $runInstallable,
         CommandTasks $commandTasks) {
-        parent::__construct();
+        parent::__construct($installables, $runInstallable, $commandTasks);
         $this->installables = $installables;
         $this->runInstallable = $runInstallable;
         $this->commandTasks = $commandTasks;
 
         $this->commandTasks->doNotThrowOnError();
-    }
+    }*/
 
     public function handle() {
         $this->commandTasks->setOutput($this->output);

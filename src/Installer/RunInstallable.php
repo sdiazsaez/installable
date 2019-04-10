@@ -1,15 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: simon
- * Date: 2019-01-15
- */
 
 namespace Larangular\Installable\Installer;
 
 use Larangular\Installable\Contracts\HasInstallable;
 use Larangular\Installable\Contracts\Installable;
 use Larangular\Installable\Contracts\Publishable;
+use Larangular\Installable\CommandTasks\CommandTasks;
 
 class RunInstallable {
 
@@ -25,7 +21,6 @@ class RunInstallable {
         //->install();
 
 
-
     }
 
     private function runTasks() {
@@ -39,8 +34,8 @@ class RunInstallable {
     }
 
     public function vendorPublish() {
-        if(is_subclass_of($this->installer, Publishable::class)) {
-            $this->commandTasks->addTask('Vendor publish', function() {
+        if (is_subclass_of($this->installer, Publishable::class)) {
+            $this->commandTasks->addTask('Vendor publish', function () {
                 $this->installer->vendorPublish();
             });
         }

@@ -4,19 +4,16 @@ namespace Larangular\Installable;
 
 use \GreyDev\ConfigExtension\ConfigExtensionProvider;
 use \Illuminate\Support\ServiceProvider;
-use Larangular\Installable\Commands\InstallableAppInstallCommand;
-use Larangular\Installable\Commands\InstallableConfigEditCommand;
-use Larangular\Installable\Commands\InstallableMigrateCommand;
-use Larangular\Installable\Commands\InstallablePublishCommand;
-use Larangular\Installable\Commands\InstallableSeedCommand;
-use Larangular\Installable\Commands\InstallCommand;
-use Larangular\Installable\Commands\MigrationConfigWriteCommand;
-use Larangular\Installable\Commands\MigrationUpdateCommand;
-use Larangular\Installable\Contracts\Installable;
+use Larangular\Installable\Commands\{MigrationConfigWriteCommand,
+    InstallCommand,
+    InstallableSeedCommand,
+    InstallablePublishCommand,
+    InstallableMigrateCommand,
+    InstallableConfigEditCommand,
+    InstallableAppInstallCommand,
+    MigrationUpdateCommand};
 use Larangular\Installable\InstallableConfig\InstallableConfig;
 use Larangular\Installable\Installer\Installables;
-use Larangular\UFScraper\UFScraperServiceProvider;
-use Larangular\UnidadFomento\Commands\UnidadFomento;
 use Larangular\Installable\InstallableMigration\InstallableMigration;
 
 class InstallableServiceProvider extends ServiceProvider {
@@ -27,7 +24,7 @@ class InstallableServiceProvider extends ServiceProvider {
      * @return void
      */
     public function boot() {
-        if($this->app->runningInConsole()) {
+        if ($this->app->runningInConsole()) {
             $this->commands([
                 InstallCommand::class,
                 InstallablePublishCommand::class,
@@ -35,7 +32,7 @@ class InstallableServiceProvider extends ServiceProvider {
                 MigrationUpdateCommand::class,
                 InstallableConfigEditCommand::class,
                 InstallableSeedCommand::class,
-                InstallableAppInstallCommand::class
+                InstallableAppInstallCommand::class,
             ]);
         }
 
@@ -75,22 +72,23 @@ class InstallableServiceProvider extends ServiceProvider {
     }
 
     private function installablesRegister(): void {
-        $this->app->singleton(Installables::class, function() {
+        $this->app->singleton(Installables::class, function () {
             return new Installables();
         });
     }
 
     private function installableConfigRegister(): void {
-        $this->app->singleton(InstallableConfig::class, function(){
+        $this->app->singleton(InstallableConfig::class, function () {
             return new InstallableConfig();
         });
     }
+
     private function installableMigrationsRegister(): void {
-        $this->app->singleton(InstallableMigration::class, function() {
+        $this->app->singleton(InstallableMigration::class, function () {
             return new InstallableMigration();
         });
 
-        $this->app->singleton('installable.migrations', function(){
+        $this->app->singleton('installable.migrations', function () {
             return app()[InstallableMigration::class];
         });
     }
