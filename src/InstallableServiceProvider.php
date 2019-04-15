@@ -4,7 +4,8 @@ namespace Larangular\Installable;
 
 use \GreyDev\ConfigExtension\ConfigExtensionProvider;
 use \Illuminate\Support\ServiceProvider;
-use Larangular\Installable\Commands\{MigrationConfigWriteCommand,
+use Larangular\Installable\Commands\{MakeDatabaseCommand,
+    MigrationConfigWriteCommand,
     InstallCommand,
     InstallableSeedCommand,
     InstallablePublishCommand,
@@ -33,6 +34,7 @@ class InstallableServiceProvider extends ServiceProvider {
                 InstallableConfigEditCommand::class,
                 InstallableSeedCommand::class,
                 InstallableAppInstallCommand::class,
+                MakeDatabaseCommand::class,
             ]);
         }
 
