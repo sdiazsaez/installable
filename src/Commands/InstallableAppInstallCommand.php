@@ -37,7 +37,7 @@ class InstallableAppInstallCommand extends InstallCommand {
 
     public function handle() {
         $this->commandTasks->setOutput($this->output);
-        $installables = $this->installables->getInstallables();
+        $installables = array_keys(config('installable.migrations'));
 
         foreach($installables as $installable) {
             $this->silentInstall($installable);
