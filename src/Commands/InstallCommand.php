@@ -81,14 +81,16 @@ class InstallCommand extends Command {
         });
     }
 
-    public function addVendorPublishTask(): void {
+    protected function addVendorPublishTask(?string $provider): void {
+        if(!isset($provider)) {
+            $provider = $this->selectedProvider;
+        }
+
         if (Instance::hasInterface($this->installer, Publishable::class)) {
-            $this->commandTasks->addTask('Vendor publish', function () {
+            $this->commandTasks->addTask('Vendor publish', function () use($provider){
                 $response = $this->call('installable:publish', [
-                    '--provider' => $this->selectedProvider,
+                    '--provider' => $provider,
                 ]);
-                //$response = $this->installer->vendorPublish();
-                //$this->line(Artisan::output());
                 return $response;
             });
         }
@@ -114,35 +116,44 @@ class InstallCommand extends Command {
         });
     }
 
-    public function addMigrationTask(): void {
-        $this->commandTasks->addTask('Migrate', function () {
+    protected function addMigrationTask(?string $provider): void {
+        if(!isset($provider)) {
+            $provider = $this->selectedProvider;
+        }
+        $this->commandTasks->addTask('Migrate', function () use($provider){
             $response = $this->call('installable:migrate', [
-                '--provider' => $this->selectedProvider,
+                '--provider' => $provider,
             ]);
             return true;
         });
     }
 
-    public function addConfigEditTask(): void {
-        $this->commandTasks->addTask('Edit configuration', function () {
+    protected function addConfigEditTask(?string $provider): void {
+        if(!isset($provider)) {
+            $provider = $this->selectedProvider;
+        }
+        $this->commandTasks->addTask('Edit configuration', function () use($provider){
             $response = $this->call('installable:config-edit', [
-                '--provider' => $this->selectedProvider,
+                '--provider' => $provider,
             ]);
             return true;
         });
     }
 
-    private function addMigrationUpdateTask(): void {
+    protected function addMigrationUpdateTask(): void {
         $this->commandTasks->addTask('Update migration', function () {
             $response = $this->call('installable:migration-update');
             return true;
         });
     }
 
-    private function addSeedTask(): void {
-        $this->commandTasks->addTask('Seed migrations', function () {
+    protected function addSeedTask(?string $provider): void {
+        if(!isset($provider)) {
+            $provider = $this->selectedProvider;
+        }
+        $this->commandTasks->addTask('Seed migrations', function () use($provider) {
             $response = $this->call('installable:seed', [
-                '--provider' => $this->selectedProvider,
+                '--provider' => $provider,
             ]);
             return true;
         });

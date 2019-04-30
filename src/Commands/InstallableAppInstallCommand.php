@@ -19,14 +19,12 @@ class InstallableAppInstallCommand extends InstallCommand {
 
     protected $signature   = 'installable:app-install';
     protected $description = 'Install every installable in config';
-    //private $UFController;
-
     private $installer;
     private $installables;
     private $commandTasks;
     private $selectedProvider;
 
-    /*
+
     public function __construct(Installables $installables, RunInstallable $runInstallable,
         CommandTasks $commandTasks) {
         parent::__construct($installables, $runInstallable, $commandTasks);
@@ -35,7 +33,7 @@ class InstallableAppInstallCommand extends InstallCommand {
         $this->commandTasks = $commandTasks;
 
         $this->commandTasks->doNotThrowOnError();
-    }*/
+    }
 
     public function handle() {
         $this->commandTasks->setOutput($this->output);
@@ -50,8 +48,8 @@ class InstallableAppInstallCommand extends InstallCommand {
     private function silentInstall($installable): void {
         $this->selectedProvider = $installable;
         $this->installer = $this->getInstaller($this->selectedProvider);
-        $this->addMigrationTask();
-        $this->addSeedTask();
+        $this->addMigrationTask($this->selectedProvider);
+        $this->addSeedTask($this->selectedProvider);
 
         try {
             $this->commandTasks->runTasks();
