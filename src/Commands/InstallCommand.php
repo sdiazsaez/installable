@@ -81,7 +81,7 @@ class InstallCommand extends Command {
         });
     }
 
-    protected function addVendorPublishTask(?string $provider): void {
+    protected function addVendorPublishTask(?string $provider = null): void {
         if(!isset($provider)) {
             $provider = $this->selectedProvider;
         }
@@ -116,7 +116,7 @@ class InstallCommand extends Command {
         });
     }
 
-    protected function addMigrationTask(?string $provider): void {
+    protected function addMigrationTask(?string $provider = null): void {
         if(!isset($provider)) {
             $provider = $this->selectedProvider;
         }
@@ -128,7 +128,7 @@ class InstallCommand extends Command {
         });
     }
 
-    protected function addConfigEditTask(?string $provider): void {
+    protected function addConfigEditTask(?string $provider = null): void {
         if(!isset($provider)) {
             $provider = $this->selectedProvider;
         }
@@ -147,7 +147,7 @@ class InstallCommand extends Command {
         });
     }
 
-    protected function addSeedTask(?string $provider): void {
+    protected function addSeedTask(?string $provider = null): void {
         if(!isset($provider)) {
             $provider = $this->selectedProvider;
         }
