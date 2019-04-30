@@ -13,8 +13,8 @@ class BaseCommand extends Command {
     private $selectedProviderInstance;
 
     public function getSelectedProvider(): string {
+        $this->selectedProvider = $this->option('provider');
         if(is_null($this->selectedProvider)) {
-            $this->selectedProvider = $this->option('provider');
 
             if (!isset($this->selectedProvider)) {
                 $this->selectedProvider = $this->selectProvider();
