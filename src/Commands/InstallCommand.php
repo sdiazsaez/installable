@@ -66,7 +66,7 @@ class InstallCommand extends Command {
         return $this->choice(' Which provider would you like to install?:', $installables);
     }
 
-    private function getInstaller(string $selectedProvider): ?Installable {
+    protected function getInstaller(string $selectedProvider): ?Installable {
         $provider = app()->getProvider($selectedProvider);
 
         $hasInstallable = is_subclass_of($provider, InstallableServiceProvider::class);
