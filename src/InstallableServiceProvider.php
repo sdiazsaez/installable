@@ -2,20 +2,20 @@
 
 namespace Larangular\Installable;
 
-use \GreyDev\ConfigExtension\ConfigExtensionProvider;
-use \Illuminate\Support\ServiceProvider;
-use Larangular\Installable\Commands\{MakeDatabaseCommand,
-    MigrationConfigWriteCommand,
-    InstallCommand,
-    InstallableSeedCommand,
-    InstallablePublishCommand,
-    InstallableMigrateCommand,
+use GreyDev\ConfigExtension\ConfigExtensionProvider;
+use Illuminate\Support\ServiceProvider;
+use Larangular\Installable\Commands\{InstallableAppInstallCommand,
     InstallableConfigEditCommand,
-    InstallableAppInstallCommand,
+    InstallableMigrateCommand,
+    InstallablePublishCommand,
+    InstallableSeedCommand,
+    InstallCommand,
+    MakeDatabaseCommand,
+    MigrationConfigWriteCommand,
     MigrationUpdateCommand};
 use Larangular\Installable\InstallableConfig\InstallableConfig;
-use Larangular\Installable\Installer\Installables;
 use Larangular\Installable\InstallableMigration\InstallableMigration;
+use Larangular\Installable\Installer\Installables;
 
 class InstallableServiceProvider extends ServiceProvider {
 
@@ -50,27 +50,13 @@ class InstallableServiceProvider extends ServiceProvider {
      * @return void
      */
     public function register() {
-        if ($this->app->environment() === 'local') {
-            //$this->app->register(ConfigServiceProvider::class);
-        }
-
-
         $this->app->register(ConfigExtensionProvider::class);
-        //$this->app->alias(ConfigExtensionFacade::class, 'config');
 
         $this->mergeConfigFrom(__DIR__ . '/../config/installable.php', 'larangular.installable');
 
         $this->installablesRegister();
         $this->installableConfigRegister();
         $this->installableMigrationsRegister();
-    }
-
-    public function provides(): array {
-        return [
-            Installables::class,
-            InstallableMigration::class,
-            InstallableConfig::class,
-        ];
     }
 
     private function installablesRegister(): void {
@@ -93,5 +79,13 @@ class InstallableServiceProvider extends ServiceProvider {
         $this->app->singleton('installable.migrations', function () {
             return app()[InstallableMigration::class];
         });
+    }
+
+    public function provides(): array {
+        return [
+            Installables::class,
+            InstallableMigration::class,
+            InstallableConfig::class,
+        ];
     }
 }

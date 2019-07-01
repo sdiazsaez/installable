@@ -34,8 +34,10 @@ class InstallableConfigEditCommand extends BaseCommand {
         $this->installableConfig = InstallableConfig::config($provider);
         if ($this->wantToEdit()) {
             $groups = $this->getEditableGroups();
-            if ($this->editMigrations($groups)) {
+            if (count($groups) > 0 && $this->editMigrations($groups)) {
                 $this->line('installable migrations was updated');
+            }else{
+                $this->line('error');
             }
         }
 
