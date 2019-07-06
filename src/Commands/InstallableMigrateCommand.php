@@ -59,7 +59,7 @@ class InstallableMigrateCommand extends BaseCommand {
 
         $this->call('migrate:refresh', [
             '--database' => $migration->getConnection(),
-            '--path'     => $migrationPath,
+            '--path'     => $this->getValidMigrationPath($migrationPath),
         ]);
     }
 
