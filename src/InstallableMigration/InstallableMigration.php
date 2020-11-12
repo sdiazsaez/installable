@@ -1,21 +1,18 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: simon
- * Date: 2019-02-06
- */
 
 namespace Larangular\Installable\InstallableMigration;
+
+use Larangular\ConfigWriter\Facades\ConfigWriter;
 
 class InstallableMigration {
 
     private $migrations = [];
 
-    public function addGlobalMigrationConfig($key, $config) {
+    public function addGlobalMigrationConfig($key, $config): void {
         $this->migrations[$key]['global-config'] = $config;
     }
 
-    public function addMigrationConfig($key, $migration) {
+    public function addMigrationConfig($key, $migration): void {
         $this->migrations[$key]['config'][$migration['name']] = $migration;
     }
 
@@ -23,12 +20,12 @@ class InstallableMigration {
         $migrationsKey = 'installable.migrations';
         $config = config($migrationsKey);
         $result = array_merge($this->migrations, $config);
-        app('config.extended')->save('installable.migrations', $result);
+        app('config.extended')->save($migrationsKey, $result);
         config()->set($migrationsKey, $result);
         return (config($migrationsKey) == $result);
     }
 
-    private function writeMigration($key, $value) {
+    private function writeMigration($key, $value): void {
         if(!file_exists(config_path('installable.php'))) {
             return;
         }

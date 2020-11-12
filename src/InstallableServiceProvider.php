@@ -2,7 +2,6 @@
 
 namespace Larangular\Installable;
 
-use GreyDev\ConfigExtension\ConfigExtensionProvider;
 use Illuminate\Support\ServiceProvider;
 use Larangular\Installable\Commands\{InstallableAppInstallCommand,
     InstallableConfigEditCommand,
@@ -13,6 +12,7 @@ use Larangular\Installable\Commands\{InstallableAppInstallCommand,
     MakeDatabaseCommand,
     MigrationConfigWriteCommand,
     MigrationUpdateCommand};
+use Larangular\ConfigWriter\ConfigWriterServiceProvider;
 use Larangular\Installable\InstallableConfig\InstallableConfig;
 use Larangular\Installable\InstallableMigration\InstallableMigration;
 use Larangular\Installable\Installer\Installables;
@@ -24,7 +24,7 @@ class InstallableServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function boot() {
+    public function boot(): void {
         if ($this->app->runningInConsole()) {
             $this->commands([
                 InstallCommand::class,
@@ -49,8 +49,8 @@ class InstallableServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function register() {
-        $this->app->register(ConfigExtensionProvider::class);
+    public function register(): void {
+        $this->app->register(ConfigWriterServiceProvider::class);
 
         $this->mergeConfigFrom(__DIR__ . '/../config/installable.php', 'larangular.installable');
 
