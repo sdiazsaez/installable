@@ -8,19 +8,12 @@
             "email": "sdiaz.sz@gmail.com"
         }
     ],
-    "repositories":
-    [
-        {
-            "type": "vcs",
-            "url": "https://github.com/sdiazsaez/laravel-config"
-        }
-    ],
     "require": {
         "php": ">=7.1",
         "illuminate/support": "~5.8.0|^6.0|^7.0|^8.0",
         "illuminate/console": "~5.8.0|^6.0|^7.0|^8.0",
         "larangular/support": "^0.1.0|^0.2.0",
-        "grey-dev-0/laravel-config":"dev-master"
+        "larangular/config-writer": "^0.1.0"
     },
     "autoload": {
         "psr-4": {
