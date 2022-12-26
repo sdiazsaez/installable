@@ -42,7 +42,7 @@ class InstallableEntryConfig {
         return $this->saveAttribute('', $this->attributes);
     }
 
-    private function saveAttribute(?string $key = '', $value): bool {
+    private function saveAttribute($key, $value): bool {
         $path = $this->getRootPath($key);
         app('config.extended')->save($path, $value);
         config()->set($path, $value);

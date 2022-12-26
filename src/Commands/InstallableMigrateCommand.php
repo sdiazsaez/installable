@@ -2,27 +2,20 @@
 
 namespace Larangular\Installable\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Arr;
-use Illuminate\Support\ServiceProvider;
-use Larangular\Installable\Contracts\HasInstallable;
-use Larangular\Installable\Contracts\Installable;
-use Larangular\Installable\Contracts\Publishable;
+use Larangular\Installable\CommandTasks\CommandTasks;
 use Larangular\Installable\Facades\InstallableConfig;
 use Larangular\Installable\InstallableConfig\Migration;
-use Larangular\Installable\CommandTasks\CommandTasks;
-use Larangular\Installable\Installer\Installables;
-use Larangular\Installable\Installer\RunInstallable;
 use Larangular\Installable\Support\PublishableGroups;
-use Larangular\Support\Facades\Instance;
 
 class InstallableMigrateCommand extends BaseCommand {
 
     protected $signature   = 'installable:migrate
-                            {--provider= : Full Qualify namespace to class implementing CanMigrate }';
+                            {--provider= : Full Qualify namespace to class implementing CanMigrate }
+                            {--operation= : Migrate operation}';
     protected $description = 'Pending description';
     protected $commandTasks;
     private   $installableConfig;
+    private   $operation;
 
     public function __construct(CommandTasks $commandTasks) {
         parent::__construct();
@@ -33,6 +26,10 @@ class InstallableMigrateCommand extends BaseCommand {
     public function handle() {
         $provider = $this->getSelectedProvider();
 
+        $this->operation = $this->option('operation') ?? '';
+        if (!empty($this->operation)) {
+            $this->operation = ':' . $this->operation;
+        }
         $this->installableConfig = InstallableConfig::config($provider);
         $this->runMigrations($this->installableConfig->getMigrations());
     }
@@ -55,9 +52,9 @@ class InstallableMigrateCommand extends BaseCommand {
             ? 'global-config'
             : $migration->getName();
 
-        $this->info("Starting migration <comment>{$name}</comment>: <comment>{$migration->getConnection()}</comment> - {$migrationPath}");
+        $this->info("Starting migration command: <comment>migrate{$this->operation} --database={$migration->getConnection()} --path={$this->getValidMigrationPath($migrationPath)}</comment> ----- <comment>{$name}</comment>");
 
-        $this->call('migrate:refresh', [
+        $this->call('migrate' . $this->operation, [
             '--database' => $migration->getConnection(),
             '--path'     => $this->getValidMigrationPath($migrationPath),
         ]);
